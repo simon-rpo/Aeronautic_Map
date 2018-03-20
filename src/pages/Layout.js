@@ -42,7 +42,7 @@ const Routes = () => (
 const Document = () => {
   return (
     <Fragment>
-      <Layout className="layout">
+      <Layout>
         <Header>
           <div className="Title">
             <Title>Airflight</Title>
@@ -72,7 +72,10 @@ const Document = () => {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©2016 Created by Ant UED
+          Airflight ©2018 Created by Simon{' '}
+          <span role="img" aria-label="Smile">
+            🙂
+          </span>
         </Footer>
       </Layout>
     </Fragment>

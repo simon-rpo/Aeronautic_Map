@@ -1,18 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-const Home = ({ str }) => {
+const HugeSizeTitle = styled.h1`
+  font-size: 70px;
+`;
+const MidSizeTitle = styled.h2`
+  font-size: 30px;
+`;
+
+const Home = () => {
   return (
     <div>
-      <h1>
+      <HugeSizeTitle>
         Welcome to Airflight
         <span role="img" aria-label="Airplane">
           ✈️
         </span>
-      </h1>
-      <h3>Your Aircraft administrator for your Airport</h3>
-      <h2>Enjoy!</h2>
+      </HugeSizeTitle>
+      <MidSizeTitle style={{ fontSize: '30px' }}>
+        Your Aircraft administrator for your Airport
+      </MidSizeTitle>
+      <MidSizeTitle>Enjoy!</MidSizeTitle>
     </div>
   );
 };

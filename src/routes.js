@@ -1,5 +1,4 @@
 import asyncComponent from './components/AsyncComponent';
-import Home from './pages/Home';
 import { nextNumber } from './utils/general';
 
 const nextRouteIndex = nextNumber();
