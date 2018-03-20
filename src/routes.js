@@ -25,4 +25,11 @@ export default [
       import('./pages/Home.js').then(module => module.default),
     ),
   ),
+  createRoute(
+    '/scanning',
+    'Aircraft Scanning',
+    asyncComponent(() =>
+      import('./pages/AircraftScanning.js').then(module => module.default),
+    ),
+  ),
 ];

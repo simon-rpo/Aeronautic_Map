@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu } from 'antd';
 import styled from 'styled-components';
 import { Link, Switch, Route } from 'react-router-dom';
 import routes from '../routes';
@@ -13,6 +13,15 @@ const Title = styled.h1`
   color: whitesmoke;
   text-align: left;
 `;
+
+const widthContent = {
+  xs: '480px',
+  sm: '576px',
+  md: '768px',
+  lg: '992px',
+  xl: '1200px',
+  xxl: '1600px',
+};
 
 const Routes = () => (
   <Switch>
@@ -51,7 +60,12 @@ const Document = () => {
           </Menu>
         </Header>
         <Content style={{ padding: '0 50px', paddingTop: 25 }}>
-          <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+          <div
+            style={{
+              background: '#fff',
+              padding: 24,
+              minHeight: 'calc(100vh - 8px)',
+            }}>
             <div style={{ flex: 1, padding: '10px' }}>
               <Routes />
             </div>
