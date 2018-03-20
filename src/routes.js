@@ -4,17 +4,23 @@ import { nextNumber } from './utils/general';
 
 const nextRouteIndex = nextNumber();
 
-const createRoute = (url, component, exact = false) => ({
+const createRoute = (url, name, component, exact = false) => ({
   index: nextRouteIndex(),
+  name: name,
   path: url,
   component,
   exact,
 });
 
 export default [
-  createRoute('/', Home, true),
+  // createRoute(
+  //   '/',
+  //   'Home',
+  //   Home,
+  //   true),
   createRoute(
     '/home',
+    'Home',
     asyncComponent(() =>
       import('./pages/Home.js').then(module => module.default),
     ),
