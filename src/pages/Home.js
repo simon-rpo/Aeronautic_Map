@@ -20,7 +20,7 @@ const Home = () => {
         </span>
       </HugeSizeTitle>
       <MidSizeTitle style={{ fontSize: '30px' }}>
-        Your Aircraft administrator for your Airport
+        Aircraft administrator for your Airport
       </MidSizeTitle>
       <MidSizeTitle>Enjoy!</MidSizeTitle>
     </div>
