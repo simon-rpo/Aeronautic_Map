@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Layout, Menu } from 'antd';
 import styled from 'styled-components';
-import { Link, Switch, Route } from 'react-router-dom';
+import { Link, Switch, Route, withRouter } from 'react-router-dom';
 import routes from '../routes';
 
 const { Header, Content, Footer } = Layout;
@@ -13,15 +13,6 @@ const Title = styled.h1`
   color: whitesmoke;
   text-align: left;
 `;
-
-const widthContent = {
-  xs: '480px',
-  sm: '576px',
-  md: '768px',
-  lg: '992px',
-  xl: '1200px',
-  xxl: '1600px',
-};
 
 const Routes = () => (
   <Switch>
@@ -59,11 +50,11 @@ const Document = () => {
             ))}
           </Menu>
         </Header>
-        <Content style={{ padding: '0 50px', paddingTop: 25 }}>
+        <Content style={{ padding: '0 25px', paddingTop: 10 }}>
           <div
             style={{
               background: '#fff',
-              padding: 24,
+              paddingTop: '5px',
               minHeight: 'calc(100vh - 8px)',
             }}>
             <div style={{ flex: 1, padding: '10px' }}>
@@ -72,7 +63,7 @@ const Document = () => {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Airflight ©2018 Created by Simon{' '}
+          Airflight ©2018 Created by Simon
           <span role="img" aria-label="Smile">
             🙂
           </span>
@@ -82,4 +73,4 @@ const Document = () => {
   );
 };
 
-export default Document;
+export default withRouter(Document);

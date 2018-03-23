@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Tag, Button, Switch, Input, Tooltip, Badge } from 'antd';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import mapImage from '../images/map.png';
 import * as actions from '../state/AircraftScanning/actions';
 
@@ -21,14 +21,6 @@ const Card = styled.div`
   border-radius: 6px;
 `;
 
-const Pointing = styled.div`
-  padding: 24px;
-  padding-left: 20%;
-  background: #fbfbfb;
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-`;
-
 class AircraftScan extends React.Component {
   constructor() {
     super();
@@ -41,33 +33,52 @@ class AircraftScan extends React.Component {
 
   showCoordinates = e => {
     // attach event to image
-    var coordX = (e.pageX - e.target.offsetLeft - e.target.width * 0.5) / 3;
-    var coordY = (e.pageY - e.target.offsetTop - e.target.height * 0.5) / 3;
+    var coordX = (e.pageX - e.target.offsetLeft - e.target.width * 0.5) / 2.78;
+    var coordY = (e.pageY - e.target.offsetTop - e.target.height * 0.5) / 3.23;
 
     this.setState({
       TooltipText: `${coordX.toFixed(1)},${coordY.toFixed(1)}`,
     });
   };
 
+  GetAircrafts = e => {
+    this.props.getAircraftList();
+  };
+
+  // LimitShow = e => {
+  //   this.props.FilterAircraft(e.target.value, '');
+  // }
+
+  CountryFilter = e => {
+    const { aircrafts } = this.props;
+    this.props.filterAircrafts(aircrafts, e.target.value);
+  };
+
   render() {
     const { TooltipText } = this.state;
-    const { aircrafts, loading } = this.props;
+    const { aircrafts, aircraftFiltered, loading } = this.props;
     let Points = [];
 
-    if (aircrafts.length > 0) {
-      aircrafts.map((item, index) => {
+    if (aircrafts.length > 0 || aircraftFiltered.length > 0) {
+      const AirCraftData =
+        aircraftFiltered.length > 0 ? aircraftFiltered : aircrafts;
+      AirCraftData.map((item, index) => {
         if (item.hasOwnProperty('Lat') && item.hasOwnProperty('Long')) {
           const image = document.getElementById('mapImage');
+          const Pointing = {
+            top: image.offsetTop + image.height * 0.5 + item.Lat * 3.23 * -1,
+            left: image.offsetLeft + image.width * 0.5 + item.Long * 2.78,
+            position: 'absolute',
+          };
           Points.push(
             <Badge
               key={index}
-              status="warning"
-              style={{
-                top:
-                  image.offsetTop + image.height * 0.5 + item.Lat * 3.23 * -1,
-                left: image.offsetLeft + image.width * 0.5 + item.Long * 2.78,
-                position: 'absolute',
-              }}
+              status={
+                item.Alt <= 1000
+                  ? 'error'
+                  : item.Alt >= 1000 && item.Alt <= 3000 ? 'warning' : 'success'
+              }
+              style={Pointing}
             />,
           );
         }
@@ -76,19 +87,23 @@ class AircraftScan extends React.Component {
 
     return (
       <div>
-        <Title>Aircraft Scanning</Title>
+        <Title style={{ paddingTop: '10px' }}>Aircraft Scanning</Title>
         <Card>
           <Form layout="inline">
             <FormItem>
               <Tag color="green" size="large">
-                On Air {aircrafts.length}
+                On Air{' '}
+                {aircraftFiltered.length > 0
+                  ? aircraftFiltered.length
+                  : aircrafts.length}
               </Tag>
             </FormItem>
             <FormItem>
               <Button
                 type="primary"
                 {...(loading ? { loading: true } : {})}
-                size="large">
+                size="large"
+                onClick={this.GetAircrafts}>
                 Refresh
               </Button>
             </FormItem>
@@ -96,10 +111,18 @@ class AircraftScan extends React.Component {
               <Switch />
             </FormItem>
             <FormItem label="Limit show aircrafts:">
-              <Input size="large" placeholder="Input quantity" />
+              <Input
+                size="large"
+                placeholder="Input quantity"
+                onBlur={this.LimitShow}
+              />
             </FormItem>
             <FormItem label="Country:">
-              <Input size="large" placeholder="Input Country" />
+              <Input
+                size="large"
+                placeholder="Input Country"
+                onChange={this.CountryFilter}
+              />
             </FormItem>
           </Form>
         </Card>
@@ -112,7 +135,6 @@ class AircraftScan extends React.Component {
               id="mapImage"
               src={mapImage}
               alt=""
-              onClick={this.createCordinates}
               onMouseMove={this.showCoordinates}
             />
           </Tooltip>
@@ -125,6 +147,7 @@ class AircraftScan extends React.Component {
 const mapStateToProps = state => {
   return {
     aircrafts: state.aircraftScanning.aircrafts,
+    aircraftFiltered: state.aircraftScanning.aircraftFiltered,
     loading: state.aircraftScanning.loading,
   };
 };
