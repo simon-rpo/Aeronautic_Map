@@ -26,7 +26,6 @@ const Routes = () => (
         component={route.component}
       />
     ))}
-    <Route component="" />
   </Switch>
 );
 
@@ -41,7 +40,7 @@ const Document = () => {
           <Menu
             theme="dark"
             mode="horizontal"
-            defaultSelectedKeys={['2']}
+            forceSubMenuRender
             style={{ lineHeight: '64px' }}>
             {routes.map(route => (
               <Menu.Item key={route.index}>

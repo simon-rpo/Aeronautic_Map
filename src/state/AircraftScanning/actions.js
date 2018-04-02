@@ -38,17 +38,23 @@ export function getAircraftList(Limit = 0, Country = '') {
 // #endregion
 
 // #region "Filter Aircrafts"
-export function setfilterAircrafts(Aircrafts, filter) {
+export function setfilterAircrafts(Aircrafts, filter, type) {
   return {
-    type: 'FILTER_AIRCRAFT',
+    type: type,
     Aircrafts,
     filter,
   };
 }
 
-export function filterAircrafts(Aircrafts, filter) {
+export function filterAircraftsCountry(Aircrafts, filter) {
   return dispatch => {
-    dispatch(setfilterAircrafts(Aircrafts, filter));
+    dispatch(setfilterAircrafts(Aircrafts, filter, 'FILTER_AIRCRAFT_COUNTRY'));
+  };
+}
+
+export function filterAircraftsNumber(Aircrafts, filter) {
+  return dispatch => {
+    dispatch(setfilterAircrafts(Aircrafts, filter, 'FILTER_AIRCRAFT_NUMBER'));
   };
 }
 // #endregion

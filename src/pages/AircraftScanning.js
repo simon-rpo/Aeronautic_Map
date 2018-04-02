@@ -24,7 +24,10 @@ const Card = styled.div`
 class AircraftScan extends React.Component {
   constructor() {
     super();
-    this.state = { TooltipText: '' };
+    this.state = {
+      TooltipText: '',
+      Interval: null,
+    };
   }
 
   componentDidMount = () => {
@@ -45,13 +48,24 @@ class AircraftScan extends React.Component {
     this.props.getAircraftList();
   };
 
-  // LimitShow = e => {
-  //   this.props.FilterAircraft(e.target.value, '');
-  // }
+  LimitShow = e => {
+    const { aircrafts } = this.props;
+    this.props.filterAircraftsNumber(aircrafts, e.target.value);
+  };
 
   CountryFilter = e => {
     const { aircrafts } = this.props;
-    this.props.filterAircrafts(aircrafts, e.target.value);
+    this.props.filterAircraftsCountry(aircrafts, e.target.value);
+  };
+
+  AutoRefresh = checked => {
+    if (checked) {
+      this.setState({
+        Interval: setInterval(() => this.props.getAircraftList(), 20000),
+      });
+    } else {
+      clearInterval(this.state.Interval);
+    }
   };
 
   render() {
@@ -108,13 +122,13 @@ class AircraftScan extends React.Component {
               </Button>
             </FormItem>
             <FormItem label="Real Time:">
-              <Switch />
+              <Switch onChange={this.AutoRefresh} />
             </FormItem>
             <FormItem label="Limit show aircrafts:">
               <Input
                 size="large"
                 placeholder="Input quantity"
-                onBlur={this.LimitShow}
+                onChange={this.LimitShow}
               />
             </FormItem>
             <FormItem label="Country:">
@@ -122,11 +136,11 @@ class AircraftScan extends React.Component {
                 size="large"
                 placeholder="Input Country"
                 onChange={this.CountryFilter}
+                onBlur={this.CountryFilter}
               />
             </FormItem>
           </Form>
         </Card>
-        {Points}
         <div
           className="Map"
           style={{ textAlign: 'center', paddingTop: '30px' }}>
@@ -139,6 +153,7 @@ class AircraftScan extends React.Component {
             />
           </Tooltip>
         </div>
+        {Points}
       </div>
     );
   }
