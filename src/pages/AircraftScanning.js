@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Tag, Button, Switch, Input, Tooltip, Badge } from 'antd';
 import { connect } from 'react-redux';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import mapImage from '../images/map.png';
 import * as actions from '../state/AircraftScanning/actions';
 
@@ -68,6 +68,13 @@ class AircraftScan extends React.Component {
     }
   };
 
+  getLatitude = (offsetTop, height, Lat) => {
+    return offsetTop + height * 0.5 + Lat * 3.23 * -1;
+  };
+  getLongitude = (offsetLeft, width, Long) => {
+    return offsetLeft + width * 0.5 + Long * 2.78;
+  };
+
   render() {
     const { TooltipText } = this.state;
     const { aircrafts, aircraftFiltered, loading } = this.props;
@@ -80,8 +87,8 @@ class AircraftScan extends React.Component {
         if (item.hasOwnProperty('Lat') && item.hasOwnProperty('Long')) {
           const image = document.getElementById('mapImage');
           const Pointing = {
-            top: image.offsetTop + image.height * 0.5 + item.Lat * 3.23 * -1,
-            left: image.offsetLeft + image.width * 0.5 + item.Long * 2.78,
+            top: this.getLatitude(image.offsetTop, image.height, item.Lat),
+            left: this.getLongitude(image.offsetLeft, image.width, item.Long),
             position: 'absolute',
           };
           Points.push(
