@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Tag, Button, Switch, Input, Tooltip, Badge } from 'antd';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import mapImage from '../images/map.png';
 import * as actions from '../state/AircraftScanning/actions';
 
@@ -36,8 +36,8 @@ class AircraftScan extends React.Component {
 
   showCoordinates = e => {
     // attach event to image
-    var coordX = (e.pageX - e.target.offsetLeft - e.target.width * 0.5) / 2.78;
-    var coordY = (e.pageY - e.target.offsetTop - e.target.height * 0.5) / 3.23;
+    var coordX = (-e.target.width * 0.5 + e.pageX - e.target.offsetLeft) / 2.78;
+    var coordY = (-e.target.height * 0.5 + e.pageY - e.target.offsetTop) / 3.23;
 
     this.setState({
       TooltipText: `${coordX.toFixed(1)},${coordY.toFixed(1)}`,
@@ -68,13 +68,6 @@ class AircraftScan extends React.Component {
     }
   };
 
-  getLatitude = (offsetTop, height, Lat) => {
-    return offsetTop + height * 0.5 + Lat * 3.23 * -1;
-  };
-  getLongitude = (offsetLeft, width, Long) => {
-    return offsetLeft + width * 0.5 + Long * 2.78;
-  };
-
   render() {
     const { TooltipText } = this.state;
     const { aircrafts, aircraftFiltered, loading } = this.props;
@@ -87,8 +80,8 @@ class AircraftScan extends React.Component {
         if (item.hasOwnProperty('Lat') && item.hasOwnProperty('Long')) {
           const image = document.getElementById('mapImage');
           const Pointing = {
-            top: this.getLatitude(image.offsetTop, image.height, item.Lat),
-            left: this.getLongitude(image.offsetLeft, image.width, item.Long),
+            top: image.height * 0.5 + image.offsetTop + item.Lat * 3.23 * -1,
+            left: image.width * 0.5 + image.offsetLeft + item.Long * 2.78,
             position: 'absolute',
           };
           Points.push(
